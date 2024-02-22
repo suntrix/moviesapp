@@ -3,38 +3,24 @@ package suntrix.kmp.moviesapp.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import suntrix.kmp.moviesapp.Greeting
+import androidx.activity.viewModels
+import suntrix.kmp.moviesapp.android.ui.MovieListViewModel
+import suntrix.kmp.moviesapp.android.ui.screens.MainScreen
+import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val movieListViewModel by viewModels<MovieListViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
-            MyApplicationTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    GreetingView(Greeting().greet())
-                }
+            AppTheme {
+                MainScreen(
+                    movieListViewModel = movieListViewModel
+                )
             }
         }
-    }
-}
-
-@Composable
-fun GreetingView(text: String) {
-    Text(text = text)
-}
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    MyApplicationTheme {
-        GreetingView("Hello, Android!")
     }
 }
