@@ -1,4 +1,4 @@
-package suntrix.kmp.moviesapp.android.ui
+package suntrix.kmp.moviesapp.android.ui.components.movielist
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 class MovieListViewModel : ViewModel() {
 
     private val _movies = MutableStateFlow<List<Movie>>(emptyList())
+
     val movies: StateFlow<List<Movie>>
         get() = _movies
 

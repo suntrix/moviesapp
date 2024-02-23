@@ -1,6 +1,7 @@
-package suntrix.kmp.moviesapp.android.ui
+package suntrix.kmp.moviesapp.android.ui.components.movielist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,7 +28,9 @@ import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 fun MovieList(
     movies: List<Movie>
 ) {
-    LazyColumn {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         items(movies) {
             MovieListItem(movie = it)
         }
@@ -41,8 +44,7 @@ fun MovieListItem(
 ) {
     Card(
         modifier = Modifier
-            .height(160.dp)
-            .padding(8.dp),
+            .height(160.dp),
         colors = CardDefaults.cardColors()
     ) {
         Row(

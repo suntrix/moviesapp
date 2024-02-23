@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import suntrix.kmp.moviesapp.android.ui.MovieListViewModel
+import suntrix.kmp.moviesapp.android.ui.components.movielist.MovieListViewModel
 import suntrix.kmp.moviesapp.android.ui.screens.MainScreen
 import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 

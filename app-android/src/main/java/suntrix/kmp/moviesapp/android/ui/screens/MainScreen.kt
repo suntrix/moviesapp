@@ -2,7 +2,6 @@ package suntrix.kmp.moviesapp.android.ui.screens
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,22 +9,18 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,17 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import suntrix.kmp.moviesapp.android.ui.Movie
-import suntrix.kmp.moviesapp.android.ui.MovieList
-import suntrix.kmp.moviesapp.android.ui.MovieListViewModel
+import suntrix.kmp.moviesapp.android.ui.components.movielist.Movie
+import suntrix.kmp.moviesapp.android.ui.components.movielist.MovieList
+import suntrix.kmp.moviesapp.android.ui.components.movielist.MovieListViewModel
 import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 
 @Composable
@@ -72,14 +62,14 @@ fun MainScreen(
         color = MaterialTheme.colorScheme.background
     ) {
         Column(
+            modifier = Modifier.padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             SearchView()
 
             Text(
                 text = "Movies",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(horizontal = 8.dp)
+                style = MaterialTheme.typography.headlineMedium
             )
 
             MovieList(
@@ -96,15 +86,15 @@ fun SearchButton(
     Button(
         shape = CircleShape,
         modifier = Modifier
-            .size(54.dp),
+            .size(50.dp),
         contentPadding = PaddingValues(0.dp),
         onClick = {
             onClick()
         }
     ) {
-        Image(
+        Icon(
             imageVector = Icons.Filled.Search,
-            contentDescription = "Search"
+            contentDescription = "Search",
         )
     }
 }

@@ -1,16 +1,24 @@
+//
+//  ContentView.swift
+//  app-ios
+//
+//  Created by Sebastian Owodzin on 22/02/2024.
+//
+
 import SwiftUI
-import MoviesAppShared
 
 struct ContentView: View {
-	let greet = Greeting().greet()
-
-	var body: some View {
-		Text(greet)
-	}
+    var body: some View {
+        VStack {
+            Image(systemName: "globe")
+                .imageScale(.large)
+                .foregroundStyle(.tint)
+            Text("Hello, world!")
+        }
+        .padding()
+    }
 }
 
-struct ContentView_Previews: PreviewProvider {
-	static var previews: some View {
-		ContentView()
-	}
+#Preview {
+    ContentView()
 }
