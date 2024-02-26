@@ -1,4 +1,4 @@
-package suntrix.kmp.moviesapp.android.ui.components.movielist
+package suntrix.kmp.moviesapp.android.ui.components.movies
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,8 +31,8 @@ fun MovieList(
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(movies) {
-            MovieListItem(movie = it)
+        items(movies) { movie ->
+            MovieListItem(movie = movie)
         }
     }
 }
@@ -60,7 +60,9 @@ fun MovieListItem(
             )
 
             Column(
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
             ) {
                 Text(
                     text = movie.title,

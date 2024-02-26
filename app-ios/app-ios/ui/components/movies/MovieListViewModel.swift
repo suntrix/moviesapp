@@ -9,7 +9,7 @@ import Foundation
 
 @Observable
 class MovieListViewModel {
-    private(set) var movies = [Movie]()
+    private(set) var movies: [Movie] = []
 
     func syncData() {
         movies = [

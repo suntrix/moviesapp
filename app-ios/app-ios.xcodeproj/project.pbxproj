@@ -10,8 +10,11 @@
 		E9068B172B880B080038B132 /* MovieListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9068B162B880B080038B132 /* MovieListViewModel.swift */; };
 		E9068B192B880DE60038B132 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9068B182B880DE60038B132 /* Theme.swift */; };
 		E9068B1B2B8831BD0038B132 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9068B1A2B8831BD0038B132 /* MainScreen.swift */; };
+		E9068B1D2B892BF30038B132 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9068B1C2B892BF30038B132 /* Search.swift */; };
+		E9068B252B8D29560038B132 /* SearchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9068B242B8D29560038B132 /* SearchButton.swift */; };
+		E9068B272B8D298E0038B132 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9068B262B8D298E0038B132 /* SearchBar.swift */; };
+		E9068B292B8D29F00038B132 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9068B282B8D29F00038B132 /* SearchViewModel.swift */; };
 		E90CE93D2B87FD18004C6D2F /* app_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90CE93C2B87FD18004C6D2F /* app_iosApp.swift */; };
-		E90CE93F2B87FD18004C6D2F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90CE93E2B87FD18004C6D2F /* ContentView.swift */; };
 		E90CE9412B87FD19004C6D2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E90CE9402B87FD19004C6D2F /* Assets.xcassets */; };
 		E90CE9442B87FD19004C6D2F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E90CE9432B87FD19004C6D2F /* Preview Assets.xcassets */; };
 		E90CE94E2B87FD19004C6D2F /* app_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90CE94D2B87FD19004C6D2F /* app_iosTests.swift */; };
@@ -41,9 +44,12 @@
 		E9068B162B880B080038B132 /* MovieListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewModel.swift; sourceTree = "<group>"; };
 		E9068B182B880DE60038B132 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		E9068B1A2B8831BD0038B132 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		E9068B1C2B892BF30038B132 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		E9068B242B8D29560038B132 /* SearchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchButton.swift; sourceTree = "<group>"; };
+		E9068B262B8D298E0038B132 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		E9068B282B8D29F00038B132 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		E90CE9392B87FD18004C6D2F /* app-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "app-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E90CE93C2B87FD18004C6D2F /* app_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app_iosApp.swift; sourceTree = "<group>"; };
-		E90CE93E2B87FD18004C6D2F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E90CE9402B87FD19004C6D2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E90CE9432B87FD19004C6D2F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		E90CE9492B87FD19004C6D2F /* app-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "app-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +85,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E9068B1E2B8957070038B132 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				E9068B1F2B8957100038B132 /* components */,
+				E9068B202B89571A0038B132 /* screens */,
+				E9068B212B8957270038B132 /* theme */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		E9068B1F2B8957100038B132 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				E9068B222B8957450038B132 /* movies */,
+				E9068B232B89577F0038B132 /* search */,
+			);
+			path = components;
+			sourceTree = "<group>";
+		};
+		E9068B202B89571A0038B132 /* screens */ = {
+			isa = PBXGroup;
+			children = (
+				E9068B1A2B8831BD0038B132 /* MainScreen.swift */,
+			);
+			path = screens;
+			sourceTree = "<group>";
+		};
+		E9068B212B8957270038B132 /* theme */ = {
+			isa = PBXGroup;
+			children = (
+				E9068B182B880DE60038B132 /* Theme.swift */,
+			);
+			path = theme;
+			sourceTree = "<group>";
+		};
+		E9068B222B8957450038B132 /* movies */ = {
+			isa = PBXGroup;
+			children = (
+				E90CE9672B880084004C6D2F /* MovieList.swift */,
+				E9068B162B880B080038B132 /* MovieListViewModel.swift */,
+			);
+			path = movies;
+			sourceTree = "<group>";
+		};
+		E9068B232B89577F0038B132 /* search */ = {
+			isa = PBXGroup;
+			children = (
+				E9068B1C2B892BF30038B132 /* Search.swift */,
+				E9068B262B8D298E0038B132 /* SearchBar.swift */,
+				E9068B242B8D29560038B132 /* SearchButton.swift */,
+				E9068B282B8D29F00038B132 /* SearchViewModel.swift */,
+			);
+			path = search;
+			sourceTree = "<group>";
+		};
 		E90CE9302B87FD18004C6D2F = {
 			isa = PBXGroup;
 			children = (
@@ -102,14 +163,10 @@
 		E90CE93B2B87FD18004C6D2F /* app-ios */ = {
 			isa = PBXGroup;
 			children = (
+				E9068B1E2B8957070038B132 /* ui */,
 				E90CE93C2B87FD18004C6D2F /* app_iosApp.swift */,
-				E90CE93E2B87FD18004C6D2F /* ContentView.swift */,
 				E90CE9402B87FD19004C6D2F /* Assets.xcassets */,
 				E90CE9422B87FD19004C6D2F /* Preview Content */,
-				E90CE9672B880084004C6D2F /* MovieList.swift */,
-				E9068B162B880B080038B132 /* MovieListViewModel.swift */,
-				E9068B182B880DE60038B132 /* Theme.swift */,
-				E9068B1A2B8831BD0038B132 /* MainScreen.swift */,
 			);
 			path = "app-ios";
 			sourceTree = "<group>";
@@ -290,10 +347,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9068B252B8D29560038B132 /* SearchButton.swift in Sources */,
 				E9068B1B2B8831BD0038B132 /* MainScreen.swift in Sources */,
 				E90CE9682B880084004C6D2F /* MovieList.swift in Sources */,
-				E90CE93F2B87FD18004C6D2F /* ContentView.swift in Sources */,
+				E9068B1D2B892BF30038B132 /* Search.swift in Sources */,
 				E9068B192B880DE60038B132 /* Theme.swift in Sources */,
+				E9068B272B8D298E0038B132 /* SearchBar.swift in Sources */,
+				E9068B292B8D29F00038B132 /* SearchViewModel.swift in Sources */,
 				E90CE93D2B87FD18004C6D2F /* app_iosApp.swift in Sources */,
 				E9068B172B880B080038B132 /* MovieListViewModel.swift in Sources */,
 			);

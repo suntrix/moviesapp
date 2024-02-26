@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MovieList: View {
+    var movies: [Movie]
+
     var body: some View {
         ScrollView {
             LazyVStack(
@@ -19,15 +21,11 @@ struct MovieList: View {
             }
         }
     }
-
-    private let movies: [Movie]
-
-    init(movies: [Movie]) {
-        self.movies = movies
-    }
 }
 
 struct MovieListItem: View {
+    var movie: Movie
+
     var body: some View {
         ZStack(
             alignment: .leading
@@ -43,10 +41,8 @@ struct MovieListItem: View {
                     content: { image in
                         image.resizable()
                             .aspectRatio(2/3, contentMode: .fit)
-                            .background()
                     },
-                    placeholder: {
-                    }
+                    placeholder: {}
                 )
                 .clipShape(
                     UnevenRoundedRectangle(
@@ -70,13 +66,6 @@ struct MovieListItem: View {
             }
         }
         .frame(height: 160)
-//        .padding(8)
-    }
-
-    private let movie: Movie
-
-    init(movie: Movie) {
-        self.movie = movie
     }
 }
 
