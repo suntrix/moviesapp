@@ -16,30 +16,32 @@ struct Search: View {
     @State var isExpanded = false
 
     var body: some View {
-        HStack {
-            if isExpanded {
-                ZStack {
-                    VStack {
-                        SearchBar(
-                            onSearch: onSearch,
-                            onClearClick: onClearClick,
-                            onCancelClick: {
-                                isExpanded = false
-                                onCancelClick()
-                            }
-                        )
-
-                        if !results.isEmpty {
-                            SearchResults(results: results)
+        if isExpanded {
+            VStack(
+                spacing: 8
+            ) {
+                SearchBar(
+                    onSearch: onSearch,
+                    onClearClick: onClearClick,
+                    onCancelClick: {
+                        withAnimation {
+                            isExpanded.toggle()
                         }
+                        onCancelClick()
                     }
-                }
-            } else {
-                Spacer()
+                )
 
+                if !results.isEmpty {
+                    SearchResults(results: results)
+                }
+            }
+        } else {
+            HStack {
+                Spacer()
+             
                 SearchButton {
                     withAnimation {
-                        isExpanded = true
+                        isExpanded.toggle()
                     }
                 }
             }
@@ -97,9 +99,7 @@ struct SearchResultsItem: View {
 }
 
 #Preview {
-    VStack(
-        alignment: .trailing
-    ) {
+    VStack {
         Search(
             results: [],
             onSearch: { _ in },

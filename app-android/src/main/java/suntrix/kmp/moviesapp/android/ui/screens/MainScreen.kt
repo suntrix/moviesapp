@@ -53,6 +53,8 @@ fun MainScreen(
     onSearchCanceled: () -> Unit,
     movieList: List<Movie>
 ) {
+    val showList = searchResults.isEmpty()
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -68,7 +70,7 @@ fun MainScreen(
                 onCancelClick = onSearchCanceled
             )
 
-            if (searchResults.isEmpty()) {
+            if (showList) {
                 Text(
                     text = "Movies",
                     style = MaterialTheme.typography.headlineMedium

@@ -13,6 +13,7 @@ struct MainScreen: View {
 
     var body: some View {
         let searchResults = searchViewModel.results
+        let showList = searchViewModel.results.isEmpty
 
         ZStack(
             alignment: .top
@@ -28,7 +29,7 @@ struct MainScreen: View {
                     onCancelClick: { searchViewModel.clear() }
                 )
 
-                if searchResults.isEmpty {
+                if showList {
                     Text("Movies")
                         .font(.largeTitle)
 

@@ -42,7 +42,7 @@ struct SearchBar: View {
                         .keyboardType(.default)
                         .onSubmit {
                             onSearch(searchQuery)
-                            isEditing = false
+                            isEditing.toggle()
                         }
                         .submitLabel(.search)
 
@@ -61,7 +61,7 @@ struct SearchBar: View {
             }
             .frame(height: 50)
             .onAppear {
-                isEditing = true
+                isEditing.toggle()
             }
 
             Button(action: onCancelClick) {
@@ -75,9 +75,7 @@ struct SearchBar: View {
 }
 
 #Preview {
-    VStack(
-        alignment: .trailing
-    ) {
+    VStack {
         SearchBar(
             onSearch: { _ in },
             onClearClick: {}, 
