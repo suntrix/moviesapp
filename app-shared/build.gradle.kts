@@ -13,19 +13,20 @@ kotlin {
     }
     
     listOf(
-        iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
+//        iosX64()
     ).forEach {
         it.binaries.framework {
             baseName = "MoviesAppShared"
             isStatic = true
+            export(projects.shared.omdb)
         }
     }
 
     sourceSets {
         commonMain.dependencies {
-            //put your multiplatform dependencies here
+            api(projects.shared.omdb)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -34,7 +35,7 @@ kotlin {
 }
 
 android {
-    namespace = "suntrix.kmp.moviesapp"
+    namespace = "suntrix.kmp.moviesapp.shared"
     compileSdk = 34
     defaultConfig {
         minSdk = 24

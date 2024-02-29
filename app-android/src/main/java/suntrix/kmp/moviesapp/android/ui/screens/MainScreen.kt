@@ -20,7 +20,6 @@ import suntrix.kmp.moviesapp.android.ui.components.movies.Movie
 import suntrix.kmp.moviesapp.android.ui.components.movies.MovieList
 import suntrix.kmp.moviesapp.android.ui.components.movies.MovieListViewModel
 import suntrix.kmp.moviesapp.android.ui.components.search.Search
-import suntrix.kmp.moviesapp.android.ui.components.search.SearchResult
 import suntrix.kmp.moviesapp.android.ui.components.search.SearchViewModel
 import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 
@@ -47,7 +46,7 @@ fun MainScreen(
 
 @Composable
 fun MainScreen(
-    searchResults: List<SearchResult>,
+    searchResults: List<SearchViewModel.SearchResult>,
     onSearch: (String) -> Unit,
     onSearchCleared: () -> Unit,
     onSearchCanceled: () -> Unit,
@@ -86,7 +85,7 @@ fun MainScreen(
 
 private class MainScreenPreviewProvider : PreviewParameterProvider<MainScreenPreviewProvider.Data> {
     data class Data(
-        val searchResults: List<SearchResult>,
+        val searchResults: List<SearchViewModel.SearchResult>,
         val movieList: List<Movie>
     )
 
@@ -117,14 +116,14 @@ private class MainScreenPreviewProvider : PreviewParameterProvider<MainScreenPre
         ),
         Data(
             searchResults = listOf(
-                SearchResult(
+                SearchViewModel.SearchResult(
                     title = "Iron Man",
-                    releaseYear = 2008,
+                    releaseYear = "2008",
                     imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
                 ),
-                SearchResult(
+                SearchViewModel.SearchResult(
                     title = "Iron Man 2",
-                    releaseYear = 2010,
+                    releaseYear = "2010",
                     imageUrl = "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
                 )
             ),
@@ -132,14 +131,14 @@ private class MainScreenPreviewProvider : PreviewParameterProvider<MainScreenPre
         ),
         Data(
             searchResults = listOf(
-                SearchResult(
+                SearchViewModel.SearchResult(
                     title = "Iron Man",
-                    releaseYear = 2008,
+                    releaseYear = "2008",
                     imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
                 ),
-                SearchResult(
+                SearchViewModel.SearchResult(
                     title = "Iron Man 2",
-                    releaseYear = 2010,
+                    releaseYear = "2010",
                     imageUrl = "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
                 )
             ),

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,7 +34,7 @@ import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 
 @Composable
 fun Search(
-    results: List<SearchResult>,
+    results: List<SearchViewModel.SearchResult>,
     onSearch: (String) -> Unit,
     onClearClick: () -> Unit,
     onCancelClick: () -> Unit,
@@ -89,14 +90,21 @@ fun Search(
 
 @Composable
 fun SearchResults(
-    results: List<SearchResult>,
+    results: List<SearchViewModel.SearchResult>,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        items(results) { result ->
-            SearchResultsItem(result = result)
+        itemsIndexed(results) { index, item ->
+            SearchResultsItem(
+                result = item,
+                modifier = if (index % 2 == 0) {
+                    Modifier
+                } else {
+                    Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
+                }
+            )
         }
     }
 }
@@ -104,13 +112,14 @@ fun SearchResults(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SearchResultsItem(
-    result: SearchResult,
+    result: SearchViewModel.SearchResult,
     modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-                .height(80.dp)
+            .height(80.dp)
+            .then(modifier)
     ) {
         GlideImage(
             model = result.imageUrl,
@@ -143,7 +152,7 @@ fun SearchResultsItem(
 
 private class SearchPreviewProvider : PreviewParameterProvider<SearchPreviewProvider.Data> {
     data class Data(
-        val results: List<SearchResult>,
+        val results: List<SearchViewModel.SearchResult>,
         val expanded: Boolean
     )
 
@@ -158,14 +167,14 @@ private class SearchPreviewProvider : PreviewParameterProvider<SearchPreviewProv
         ),
         Data(
             results = listOf(
-                SearchResult(
+                SearchViewModel.SearchResult(
                     title = "Iron Man",
-                    releaseYear = 2008,
+                    releaseYear = "2008",
                     imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
                 ),
-                SearchResult(
+                SearchViewModel.SearchResult(
                     title = "Iron Man 2",
-                    releaseYear = 2010,
+                    releaseYear = "2010",
                     imageUrl = "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
                 )
             ),

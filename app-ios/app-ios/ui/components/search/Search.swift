@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Search: View {
-    var results: [SearchResult] = []
+    var results: [SearchViewModel.SearchResult] = []
     let onSearch: (String) -> Void
     let onClearClick: () -> Void
     let onCancelClick: () -> Void
@@ -50,7 +50,7 @@ struct Search: View {
 }
 
 struct SearchResults: View {
-    var results: [SearchResult]
+    var results: [SearchViewModel.SearchResult]
 
     var body: some View {
         ScrollView {
@@ -58,7 +58,8 @@ struct SearchResults: View {
                 spacing: 4
             ) {
                 ForEach(results, id: \.self) { result in
-                    SearchResultsItem(result: result)
+                    let index = results.firstIndex(of: result)!
+                    SearchResultsItem(result: result).background(index % 2 == 0 ? Color.white : Color("surfaceVariant"))
                 }
             }
         }
@@ -66,7 +67,7 @@ struct SearchResults: View {
 }
 
 struct SearchResultsItem: View {
-    var result: SearchResult
+    var result: SearchViewModel.SearchResult
 
     var body: some View {
         HStack(
@@ -118,14 +119,14 @@ struct SearchResultsItem: View {
 
         Search(
             results: [
-                SearchResult(
+                SearchViewModel.SearchResult(
                     title: "Iron Man",
-                    releaseYear: 2008,
+                    releaseYear: "2008",
                     imageUrl: "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
                 ),
-                SearchResult(
+                SearchViewModel.SearchResult(
                     title: "Iron Man 2",
-                    releaseYear: 2010,
+                    releaseYear: "2010",
                     imageUrl: "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
                 )
             ],

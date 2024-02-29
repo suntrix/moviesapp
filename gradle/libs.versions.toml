@@ -3,18 +3,20 @@ agp = "8.2.2"
 androidx-activityCompose = "1.8.2"
 androidx-lifecycleRuntimeCompose = "2.7.0"
 benmanes-versions = "0.51.0"
-compose-bom = "2024.02.00"
+buildkonfig = "0.15.1"
+compose-bom = "2024.02.01"
 compose-compiler = "1.5.10"
 compose-material3 = "1.2.0"
 glide = "4.16.0"
 glide-compose = "1.0.0-beta01"
 goncalossilva-resources = "0.4.0"
+kmp-common = "0.1-SNAPSHOT-1"
 kotlin = "1.9.22"
 kotlinx-coroutines = "1.7.3"
 kotlinx-datetime = "0.5.0"
-kotlinx-serialization = "1.6.2"
+kotlinx-serialization = "1.6.3"
 ksp = "1.9.22-1.0.16"
-ktor = "2.3.7"
+ktor = "2.3.8"
 logback = "1.4.14"
 
 [libraries]
@@ -29,6 +31,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glide-compose" }
 glide-ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glide" }
 goncalossilva-resources = { module = "com.goncalossilva:resources", version.ref = "goncalossilva-resources" }
+kmp-common-ktor = { module = "kmp.common:ktor", version.ref = "kmp-common" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -50,6 +53,7 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 benmanesVersions = { id = "com.github.ben-manes.versions", version.ref = "benmanes-versions" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilva-resources" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
