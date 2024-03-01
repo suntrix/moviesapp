@@ -29,3 +29,5 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 }
 
 // check for latest dependencies - ./gradlew dependencyUpdates -Drevision=release
+
+// ./gradlew build -Pbuildkonfig.flavor=release

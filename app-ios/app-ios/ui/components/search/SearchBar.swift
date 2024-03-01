@@ -15,11 +15,11 @@ struct SearchBar: View {
     @State var searchQuery: String = ""
     var placeholderText: String = "Search..."
 
-//    private var showClearButton: Binding<Bool> {
-//        Binding {
-//            return !self.searchQuery.isEmpty
-//        } set: { _ in }
-//    }
+    private var showClearButton: Binding<Bool> {
+        Binding {
+            return !self.searchQuery.isEmpty
+        } set: { _ in }
+    }
 
     @FocusState private var isEditing: Bool
 
@@ -46,8 +46,7 @@ struct SearchBar: View {
                         }
                         .submitLabel(.search)
 
-//                    if showClearButton {
-                    if !searchQuery.isEmpty {
+                    if showClearButton.wrappedValue {
                         Button(action: {
                             self.searchQuery = ""
                             onClearClick()

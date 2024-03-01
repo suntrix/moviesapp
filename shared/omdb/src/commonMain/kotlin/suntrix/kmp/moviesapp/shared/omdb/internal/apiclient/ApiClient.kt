@@ -15,7 +15,7 @@ import kmp.common.ktor.KtorHttpClient
 import kmp.common.ktor.httpClientEngine
 import suntrix.kmp.moviesapp.shared.omdb.BuildKonfig
 
-class ApiClient(
+internal class ApiClient(
     private val apiKey: String = BuildKonfig.API_KEY,
     baseUrl: Url = Url("https://www.omdbapi.com"),
     engine: HttpClientEngine = httpClientEngine(),
@@ -26,9 +26,9 @@ class ApiClient(
             json()
         }
 
-        Logging {
-            level = LogLevel.INFO
-        }
+//        Logging {
+//            level = if (BuildKonfig.DEBUG) LogLevel.ALL else LogLevel.INFO
+//        }
 
         BrowserUserAgent()
 

@@ -5,27 +5,42 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import suntrix.kmp.moviesapp.shared.omdb.OMDbApiRepository
-import suntrix.kmp.moviesapp.shared.omdb.internal.DefaultOMDbApiRepository
-import suntrix.kmp.moviesapp.shared.omdb.internal.OMDbApiDataSource
-import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.ApiClient
+import suntrix.kmp.moviesapp.shared.MovieRepository
+import suntrix.kmp.moviesapp.shared.injectMovieRepository
+import suntrix.kmp.moviesapp.shared.logging.Logger
+import suntrix.kmp.moviesapp.shared.logging.injectLogger
 
 class SearchViewModel(
-    private val repository: OMDbApiRepository = DefaultOMDbApiRepository()
+    private val repository: MovieRepository = injectMovieRepository(),
+    private val logger: Logger = injectLogger()
 ) : ViewModel() {
-    private val _results = MutableStateFlow<List<SearchResult>>(emptyList())
 
+    private val _results = MutableStateFlow<List<SearchResult>>(emptyList())
     val results: StateFlow<List<SearchResult>>
         get() = _results
 
+    init {
+        logger.setup("suntrix.kmp.moviesapp.android.ui.components.search", "SearchViewModel")
+    }
+
     fun clear() {
+        logger.debug("clear")
+
         _results.value = emptyList()
     }
 
     fun search(query: String) {
+        logger.debug("search", mapOf("query" to query))
+
         viewModelScope.launch {
             _results.value = repository.search(query).map {
-                it.run { SearchResult(title, releaseYear, imageUrl) }
+                it.run {
+                    SearchResult(
+                        title = title,
+                        releaseYear = releaseYear,
+                        imageUrl = imageUrl
+                    )
+                }
             }
         }
     }

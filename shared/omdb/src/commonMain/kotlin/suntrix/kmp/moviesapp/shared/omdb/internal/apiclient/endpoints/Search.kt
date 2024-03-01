@@ -7,7 +7,7 @@ import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.ApiClient
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.model.SearchResponse
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.model.Type
 
-suspend fun ApiClient.search(
+internal suspend fun ApiClient.search(
     query: String,
     type: Type? = null,
     releaseYear: Int? = null,

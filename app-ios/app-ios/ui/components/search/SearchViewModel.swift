@@ -9,7 +9,7 @@ import MoviesAppShared
 
 @Observable
 class SearchViewModel {
-    private let repository: OMDbApiRepository = ProvidersKt.OMDbApiRepository
+    private let repository: MovieRepository = MovieRepositoryKt.injectMovieRepository()
 
     private(set) var results: [SearchResult] = []
 

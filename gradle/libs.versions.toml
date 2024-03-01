@@ -11,13 +11,14 @@ glide = "4.16.0"
 glide-compose = "1.0.0-beta01"
 goncalossilva-resources = "0.4.0"
 kmp-common = "0.1-SNAPSHOT-1"
+kodein-log = "1.1.2"
 kotlin = "1.9.22"
 kotlinx-coroutines = "1.7.3"
 kotlinx-datetime = "0.5.0"
 kotlinx-serialization = "1.6.3"
 ksp = "1.9.22-1.0.16"
 ktor = "2.3.8"
-logback = "1.4.14"
+logback = "1.5.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -32,6 +33,7 @@ glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "g
 glide-ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glide" }
 goncalossilva-resources = { module = "com.goncalossilva:resources", version.ref = "goncalossilva-resources" }
 kmp-common-ktor = { module = "kmp.common:ktor", version.ref = "kmp-common" }
+kodein-log = { module = "org.kodein.log:canard", version.ref = "kodein-log" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }

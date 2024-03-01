@@ -38,7 +38,7 @@ fun Search(
     onSearch: (String) -> Unit,
     onClearClick: () -> Unit,
     onCancelClick: () -> Unit,
-//    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier,
     expanded: Boolean = results.isNotEmpty()
 ) {
     var isExpanded by remember { mutableStateOf(expanded) }
@@ -46,7 +46,8 @@ fun Search(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .then(modifier),
         horizontalArrangement = Arrangement.End
     ) {
         AnimatedContent(

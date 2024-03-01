@@ -1,6 +1,9 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
+
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.kotlinMultiplatform)
 }
 
 kotlin {
@@ -13,23 +16,16 @@ kotlin {
             }
         }
     }
-    
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64(),
-//        iosX64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "MoviesAppShared"
-            isStatic = true
-            export(projects.shared.omdb)
-        }
-    }
+
+//    jvm()
+
+    iosArm64()
+    iosSimulatorArm64()
+//    iosX64()
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.shared.logging)
-            api(projects.shared.omdb)
+            implementation(libs.kodein.log)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -37,8 +33,20 @@ kotlin {
     }
 }
 
+buildkonfig {
+    packageName = "suntrix.kmp.moviesapp.shared.logging"
+
+    defaultConfigs {
+        buildConfigField(FieldSpec.Type.BOOLEAN, "DEBUG", "true")
+    }
+
+    defaultConfigs("release") {
+        buildConfigField(FieldSpec.Type.BOOLEAN, "DEBUG", "false")
+    }
+}
+
 android {
-    namespace = "suntrix.kmp.moviesapp.shared"
+    namespace = "suntrix.kmp.moviesapp.shared.logging"
     compileSdk = 34
     defaultConfig {
         minSdk = 24

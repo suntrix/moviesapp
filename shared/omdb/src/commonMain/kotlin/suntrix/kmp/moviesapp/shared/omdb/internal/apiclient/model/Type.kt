@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class Type {
+internal enum class Type {
     @SerialName("movie") MOVIE,
     @SerialName("series") SERIES,
     @SerialName("episode") EPISODE;

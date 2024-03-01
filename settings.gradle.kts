@@ -36,4 +36,6 @@ dependencyResolutionManagement {
 rootProject.name = "MoviesApp"
 include(":app-android")
 include(":app-shared")
+
+include(":shared:logging")
 include(":shared:omdb")

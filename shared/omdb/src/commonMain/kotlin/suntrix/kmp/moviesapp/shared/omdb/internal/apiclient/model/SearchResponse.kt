@@ -4,10 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SearchResponse(
+internal data class SearchResponse(
     @SerialName("Search") val results: List<SearchResult>,
     val totalResults: Int,
-    @SerialName("Response") val response: Boolean
+    @SerialName("Response") val response: Boolean,
+    @SerialName("Error") val error: String? = null
 ) {
     @Serializable
     data class SearchResult(

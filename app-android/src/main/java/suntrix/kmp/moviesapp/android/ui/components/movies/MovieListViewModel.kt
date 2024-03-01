@@ -5,15 +5,27 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import suntrix.kmp.moviesapp.shared.MovieRepository
+import suntrix.kmp.moviesapp.shared.injectMovieRepository
+import suntrix.kmp.moviesapp.shared.logging.Logger
+import suntrix.kmp.moviesapp.shared.logging.injectLogger
 
-class MovieListViewModel : ViewModel() {
+class MovieListViewModel(
+    private val repository: MovieRepository = injectMovieRepository(),
+    private val logger: Logger = injectLogger()
+) : ViewModel() {
 
     private val _movies = MutableStateFlow<List<Movie>>(emptyList())
-
     val movies: StateFlow<List<Movie>>
         get() = _movies
 
+    init {
+        logger.setup("suntrix.kmp.moviesapp.android.ui.components.movies", "MovieListViewModel")
+    }
+
     fun syncData() {
+        logger.debug("syncData")
+
         _movies.value = listOf(
             Movie(
                 title = "Iron Man",

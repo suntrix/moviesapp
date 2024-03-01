@@ -1,17 +1,29 @@
 package suntrix.kmp.moviesapp.shared.omdb.internal
 
+import suntrix.kmp.moviesapp.shared.logging.Logger
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.ApiClient
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.endpoints.search
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.model.SearchResponse
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.model.Type
 
-class OMDbApiDataSource(
-    private val apiClient: ApiClient = ApiClient()
+internal class OMDbApiDataSource(
+    private val apiClient: ApiClient,
+    private val logger: Logger
 ) {
+    init {
+        logger.setup("suntrix.kmp.moviesapp.shared.omdb", "OMDbApiDataSource")
+    }
+
     suspend fun search(
         query: String,
         type: Type? = null,
         releaseYear: Int? = null,
         page: Int? = null,
-    ): SearchResponse = apiClient.search(query, type, releaseYear, page)
+    ): SearchResponse {
+        logger.debug("search", mapOf("query" to query, "type" to "$type", "releaseYear" to "$releaseYear", "page" to "$page"))
+
+        return apiClient.search(query, type, releaseYear, page).also {
+            logger.debug("search", mapOf("response" to "$it"))
+        }
+    }
 }

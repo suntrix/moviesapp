@@ -10,6 +10,8 @@ plugins {
 }
 
 kotlin {
+    explicitApi()
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -30,8 +32,10 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization.kotlinx.json)
-//            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
+
+            implementation(projects.shared.logging)
         }
         commonTest.dependencies {
             implementation(libs.goncalossilva.resources)
@@ -48,13 +52,19 @@ buildkonfig {
     packageName = "suntrix.kmp.moviesapp.shared.omdb"
 
     defaultConfigs {
-        val apiKey: String = gradleLocalProperties(rootProject.projectDir).getProperty("omdb.apiKey")
+        buildConfigField(FieldSpec.Type.BOOLEAN, "DEBUG", "true")
 
-        require(apiKey.isNotEmpty()) {
-            "OMDb API key not set in local.properties `omdb.apiKey`"
+        val apiKey: String = gradleLocalProperties(rootProject.projectDir).getProperty("omdb.apiKey").also {
+            require(it.isNotEmpty()) {
+                "OMDb API key not set in local.properties `omdb.apiKey`"
+            }
         }
 
         buildConfigField(FieldSpec.Type.STRING, "API_KEY", apiKey)
+    }
+
+    defaultConfigs("release") {
+        buildConfigField(FieldSpec.Type.BOOLEAN, "DEBUG", "false")
     }
 }
 

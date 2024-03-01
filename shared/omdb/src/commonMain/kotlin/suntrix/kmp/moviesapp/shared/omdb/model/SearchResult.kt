@@ -1,6 +1,6 @@
 package suntrix.kmp.moviesapp.shared.omdb.model
 
-data class SearchResult(
+public data class SearchResult(
     val title: String,
     val releaseYear: String,
     val imageUrl: String
