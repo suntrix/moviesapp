@@ -19,18 +19,14 @@ class SearchViewModel(
     val results: StateFlow<List<SearchResult>>
         get() = _results
 
-    init {
-        logger.setup("suntrix.kmp.moviesapp.android.ui.components.search", "SearchViewModel")
-    }
-
     fun clear() {
-        logger.debug("clear")
+        logger.debug("SearchViewModel::clear")
 
         _results.value = emptyList()
     }
 
     fun search(query: String) {
-        logger.debug("search", mapOf("query" to query))
+        logger.debug("SearchViewModel::search", mapOf("query" to query))
 
         viewModelScope.launch {
             _results.value = repository.search(query).map {

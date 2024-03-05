@@ -1,7 +1,9 @@
 package suntrix.kmp.moviesapp.shared.logging
 
 public interface Logger {
-    public fun setup(packageName: String, name: String)
+    public enum class Level { DEBUG, INFO, WARNING, ERROR }
+
+    public fun setupTag(name: String)
     public fun debug(message: () -> String)
     public fun debug(functionName: String, params: Map<String, String> = emptyMap(), message: (() -> String)? = null)
     public fun info(message: () -> String)
@@ -12,4 +14,10 @@ public interface Logger {
     public fun error(functionName: String, params: Map<String, String> = emptyMap(), message: (() -> String)? = null, throwable: Throwable? = null)
 }
 
-public fun injectLogger(): Logger = KodeinLogger()
+public fun injectLogger(): Logger = KodeinLogger(
+    if (BuildKonfig.DEBUG) {
+        Logger.Level.DEBUG
+    } else {
+        Logger.Level.ERROR
+    }
+)

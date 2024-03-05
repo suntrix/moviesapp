@@ -3,23 +3,32 @@ package suntrix.kmp.moviesapp.shared.logging
 import org.kodein.log.LoggerFactory
 import org.kodein.log.filter.entry.minimumLevel
 import org.kodein.log.frontend.defaultLogFrontend
-import org.kodein.log.newLogger
 import org.kodein.log.Logger.Tag
+import org.kodein.log.newLogger
 import org.kodein.log.Logger.Level as LogLevel
 
-internal class KodeinLogger : Logger {
+internal class KodeinLogger(
+    level: Logger.Level
+) : Logger {
     private val loggerFactory = LoggerFactory(
         frontends = listOf(defaultLogFrontend),
-        filters = listOf(minimumLevel(if (BuildKonfig.DEBUG) LogLevel.DEBUG else LogLevel.ERROR))
+        filters = listOf(
+            minimumLevel(
+                when(level) {
+                    Logger.Level.DEBUG -> LogLevel.DEBUG
+                    Logger.Level.INFO -> LogLevel.INFO
+                    Logger.Level.WARNING -> LogLevel.WARNING
+                    Logger.Level.ERROR -> LogLevel.ERROR
+                }
+            )
+        )
     )
 
-    private var logger: org.kodein.log.Logger = loggerFactory.newLogger(
-        tag = Tag("", "KodeinLogger")
-    )
+    private var logger: org.kodein.log.Logger = newLogger(loggerFactory)
 
-    override fun setup(packageName: String, name: String) {
+    override fun setupTag(name: String) {
         logger = loggerFactory.newLogger(
-            tag = Tag(packageName, name)
+            tag = Tag("Logger", name)
         )
     }
 

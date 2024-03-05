@@ -18,7 +18,7 @@ class SearchViewModel {
     }
 
     func search(query: String) {
-        repository.search(query: query) { [weak self] results, error in
+        repository.search(query: query, releaseYear: nil, page: nil) { [weak self] results, error in
             self?.results = results?.map {
                 SearchResult(
                     title: $0.title,

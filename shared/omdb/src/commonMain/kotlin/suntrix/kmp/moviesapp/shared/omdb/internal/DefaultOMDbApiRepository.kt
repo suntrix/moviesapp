@@ -10,17 +10,13 @@ internal class DefaultOMDbApiRepository(
     private val dataSource: OMDbApiDataSource,
     private val logger: Logger
 ) : OMDbApiRepository {
-    init {
-        logger.setup("suntrix.kmp.moviesapp.shared.omdb", "DefaultOMDbApiRepository")
-    }
-
     override suspend fun search(
         query: String,
         type: Type?,
         releaseYear: Int?,
         page: Int?,
     ): List<SearchResult> {
-        logger.debug("search", mapOf("query" to query, "type" to "$type", "releaseYear" to "$releaseYear", "page" to "$page"))
+        logger.debug("DefaultOMDbApiRepository::search", mapOf("query" to query, "type" to "$type", "releaseYear" to "$releaseYear", "page" to "$page"))
 
         return dataSource.search(
             query = query,
@@ -41,7 +37,7 @@ internal class DefaultOMDbApiRepository(
                 )
             }
         }.also {
-            logger.debug("search", mapOf("data" to "$it"))
+            logger.debug("DefaultOMDbApiRepository::search", mapOf("data" to "$it"))
         }
     }
 }

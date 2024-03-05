@@ -10,20 +10,16 @@ internal class OMDbApiDataSource(
     private val apiClient: ApiClient,
     private val logger: Logger
 ) {
-    init {
-        logger.setup("suntrix.kmp.moviesapp.shared.omdb", "OMDbApiDataSource")
-    }
-
     suspend fun search(
         query: String,
         type: Type? = null,
         releaseYear: Int? = null,
         page: Int? = null,
     ): SearchResponse {
-        logger.debug("search", mapOf("query" to query, "type" to "$type", "releaseYear" to "$releaseYear", "page" to "$page"))
+        logger.debug("OMDbApiDataSource::search", mapOf("query" to query, "type" to "$type", "releaseYear" to "$releaseYear", "page" to "$page"))
 
         return apiClient.search(query, type, releaseYear, page).also {
-            logger.debug("search", mapOf("response" to "$it"))
+            logger.debug("OMDbApiDataSource::search", mapOf("response" to "$it"))
         }
     }
 }

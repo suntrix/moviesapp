@@ -9,16 +9,12 @@ public class DefaultMovieRepository(
     private val omDbApiRepository: OMDbApiRepository,
     private val logger: Logger
 ) : MovieRepository {
-    init {
-        logger.setup("suntrix.kmp.moviesapp.shared", "DefaultMovieRepository")
-    }
-
     override suspend fun search(
         query: String,
         releaseYear: Int?,
         page: Int?
     ): List<SearchResult> {
-        logger.debug("search", mapOf("query" to query, "releaseYear" to "$releaseYear", "page" to "$page"))
+        logger.debug("DefaultMovieRepository::search", mapOf("query" to query, "releaseYear" to "$releaseYear", "page" to "$page"))
 
         return omDbApiRepository.search(
             query = query,
@@ -26,7 +22,7 @@ public class DefaultMovieRepository(
             releaseYear = releaseYear,
             page = page
         ).also {
-            logger.debug("search", mapOf("data" to "$it"))
+            logger.debug("DefaultMovieRepository::search", mapOf("data" to "$it"))
         }
     }
 }

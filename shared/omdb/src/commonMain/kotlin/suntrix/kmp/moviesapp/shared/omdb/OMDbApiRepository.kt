@@ -16,10 +16,14 @@ public interface OMDbApiRepository {
     ): List<SearchResult>
 }
 
-public fun injectOMDbApiRepository(): OMDbApiRepository = DefaultOMDbApiRepository(
-    dataSource  = OMDbApiDataSource(
-        apiClient  = ApiClient(),
-        logger = injectLogger()
-    ),
-    logger = injectLogger()
-)
+public fun injectOMDbApiRepository(): OMDbApiRepository {
+    val logger = injectLogger().apply { setupTag("OMDb") }
+
+    return DefaultOMDbApiRepository(
+        dataSource  = OMDbApiDataSource(
+            apiClient  = ApiClient(),
+            logger = logger
+        ),
+        logger = logger
+    )
+}

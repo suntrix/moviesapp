@@ -14,5 +14,5 @@ public interface SeriesRepository {
 
 public fun injectSeriesRepository(): MovieRepository = DefaultSeriesRepository(
     omDbApiRepository = injectOMDbApiRepository(),
-    logger = injectLogger()
+    logger = injectLogger().apply { setupTag("Series") }
 )

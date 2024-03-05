@@ -19,12 +19,8 @@ class MovieListViewModel(
     val movies: StateFlow<List<Movie>>
         get() = _movies
 
-    init {
-        logger.setup("suntrix.kmp.moviesapp.android.ui.components.movies", "MovieListViewModel")
-    }
-
     fun syncData() {
-        logger.debug("syncData")
+        logger.debug("MovieListViewModel::syncData")
 
         _movies.value = listOf(
             Movie(

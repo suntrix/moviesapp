@@ -8,7 +8,7 @@ import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.ApiClient
 
 val apiKey = "qwerty123"
 
-fun mockedApiClient(
+internal fun mockedApiClient(
     handler: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData
 ) = ApiClient(apiKey = apiKey, engine = MockEngine(handler))
 
