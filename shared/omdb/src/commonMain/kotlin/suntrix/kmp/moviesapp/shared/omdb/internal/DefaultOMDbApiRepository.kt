@@ -28,7 +28,7 @@ internal class DefaultOMDbApiRepository(
             },
             releaseYear = releaseYear,
             page = page
-        ).run {
+        )?.run {
             results.map {
                 SearchResult(
                     it.title,
@@ -38,6 +38,6 @@ internal class DefaultOMDbApiRepository(
             }
         }.also {
             logger.debug("DefaultOMDbApiRepository::search", mapOf("data" to "$it"))
-        }
+        } ?: emptyList()
     }
 }

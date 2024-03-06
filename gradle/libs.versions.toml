@@ -10,13 +10,14 @@ compose-material3 = "1.2.0"
 glide = "4.16.0"
 glide-compose = "1.0.0-beta01"
 goncalossilva-resources = "0.4.0"
-kmp-common = "0.1-SNAPSHOT-1"
+kmp-common = "0.1-SNAPSHOT-2"
 kodein-log = "1.1.2"
+kodeinMock = "1.17.0"
 kotlin = "1.9.22"
 kotlinx-coroutines = "1.7.3"
 kotlinx-datetime = "0.5.0"
 kotlinx-serialization = "1.6.3"
-ksp = "1.9.22-1.0.16"
+ksp = "1.9.22-1.0.17"
 ktor = "3.0.0-beta-1"
 logback = "1.5.1"
 
@@ -34,6 +35,7 @@ glide-ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glide" }
 goncalossilva-resources = { module = "com.goncalossilva:resources", version.ref = "goncalossilva-resources" }
 kmp-common-ktor = { module = "kmp.common:ktor", version.ref = "kmp-common" }
 kodein-log = { module = "org.kodein.log:canard", version.ref = "kodein-log" }
+kodein-mock = { module = "org.kodein.mock:mockmp-test-helper", version.ref = "kodeinMock" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -57,6 +59,7 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 benmanesVersions = { id = "com.github.ben-manes.versions", version.ref = "benmanes-versions" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 goncalossilvaResources = { id = "com.goncalossilva.resources", version.ref = "goncalossilva-resources" }
+kodeinMock = { id = "org.kodein.mock.mockmp", version.ref = "kodeinMock" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

@@ -20,72 +20,72 @@ import kotlin.test.fail
 class SearchTest {
 
     @Test
-    fun `GIVEN mocked api client WHEN search is invoked with test data THEN expected data is returned`() {
-        runBlocking {
-            listOf(null).plus(Type.entries.toTypedArray()).forEach { type ->
-                listOf(null, 2000).forEach { releaseYear ->
-                    listOf(null, 2).forEach { page ->
-                        val apiClient = mockedApiClient { request ->
-                            when {
-                                request.url.encodedPath.matches(Regex("""/""")) -> {
-                                    assertEquals(HttpMethod.Get, request.method)
-                                    assertEquals(apiKey, request.url.parameters["apikey"])
+    fun `GIVEN mocked api client WHEN search is invoked with test data THEN expected data is returned`() = runBlocking {
+        val queryString = "iron"
 
-                                    assertEquals("qwerty", request.url.parameters["s"])
-                                    type?.let { assertEquals(it.toString(), request.url.parameters["type"]) }
-                                    releaseYear?.let { assertEquals(it.toString(), request.url.parameters["y"]) }
-                                    page?.let { assertEquals(it.toString(), request.url.parameters["page"]) }
+        listOf(null).plus(Type.entries.toTypedArray()).forEach { type ->
+            listOf(null, 2000).forEach { releaseYear ->
+                listOf(null, 2).forEach { page ->
+                    val apiClient = mockedApiClient { request ->
+                        when {
+                            request.url.encodedPath.matches(Regex("""/""")) -> {
+                                assertEquals(HttpMethod.Get, request.method)
+                                assertEquals(apiKey, request.url.parameters["apikey"])
 
-                                    respondJsonFromFile("search.json")
-                                }
+                                assertEquals(queryString, request.url.parameters["s"])
+                                type?.let { assertEquals(it.toString(), request.url.parameters["type"]) }
+                                releaseYear?.let { assertEquals(it.toString(), request.url.parameters["y"]) }
+                                page?.let { assertEquals(it.toString(), request.url.parameters["page"]) }
 
-                                else -> fail()
+                                respondJsonFromFile("search.json")
                             }
-                        }
 
-                        assertEquals(
-                            Json.decodeFromFile<SearchResponse>("search.json"),
-                            apiClient.use { it.search("qwerty", type, releaseYear, page) }
-                        )
+                            else -> fail()
+                        }
                     }
+
+                    assertEquals(
+                        Json.decodeFromFile<SearchResponse>("search.json"),
+                        apiClient.use { it.search(queryString, type, releaseYear, page) }
+                    )
                 }
             }
         }
     }
 
     @Test
-    fun `GIVEN mocked api client error WHEN search is invoked with test data THEN error is thrown`() {
-        runBlocking {
-            listOf(null).plus(Type.entries.toTypedArray()).forEach { type ->
-                listOf(null, 2000).forEach { releaseYear ->
-                    listOf(null, 2).forEach { page ->
-                        val apiClient = mockedApiClient { request ->
-                            when {
-                                request.url.encodedPath.matches(Regex("""/""")) -> {
-                                    assertEquals(HttpMethod.Get, request.method)
-                                    assertEquals(apiKey, request.url.parameters["apikey"])
+    fun `GIVEN mocked api client error WHEN search is invoked with test data THEN error is thrown`() = runBlocking {
+        val queryString = "invalid"
 
-                                    assertEquals("qwerty", request.url.parameters["s"])
-                                    type?.let { assertEquals(it.toString(), request.url.parameters["type"]) }
-                                    releaseYear?.let { assertEquals(it.toString(), request.url.parameters["y"]) }
-                                    page?.let { assertEquals(it.toString(), request.url.parameters["page"]) }
+        listOf(null).plus(Type.entries.toTypedArray()).forEach { type ->
+            listOf(null, 2000).forEach { releaseYear ->
+                listOf(null, 2).forEach { page ->
+                    val apiClient = mockedApiClient { request ->
+                        when {
+                            request.url.encodedPath.matches(Regex("""/""")) -> {
+                                assertEquals(HttpMethod.Get, request.method)
+                                assertEquals(apiKey, request.url.parameters["apikey"])
 
-                                    respondJsonFromFile("error.json")
-                                }
+                                assertEquals(queryString, request.url.parameters["s"])
+                                type?.let { assertEquals(it.toString(), request.url.parameters["type"]) }
+                                releaseYear?.let { assertEquals(it.toString(), request.url.parameters["y"]) }
+                                page?.let { assertEquals(it.toString(), request.url.parameters["page"]) }
 
-                                else -> fail()
+                                respondJsonFromFile("error.json")
                             }
-                        }
 
-                        val error = assertFailsWith<ErrorResponseException> {
-                            apiClient.use { it.search("qwerty", type, releaseYear, page) }
+                            else -> fail()
                         }
-
-                        assertEquals(
-                            Json.decodeFromFile<ErrorResponse>("error.json"),
-                            error.errorResponse
-                        )
                     }
+
+                    val error = assertFailsWith<ErrorResponseException> {
+                        apiClient.use { it.search(queryString, type, releaseYear, page) }
+                    }
+
+                    assertEquals(
+                        Json.decodeFromFile<ErrorResponse>("error.json"),
+                        error.errorResponse
+                    )
                 }
             }
         }

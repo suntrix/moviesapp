@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.goncalossilvaResources)
+    alias(libs.plugins.kodeinMock)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
 }
@@ -29,6 +30,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kmp.common.ktor)
+            implementation(libs.kodein.mock)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization.kotlinx.json)
@@ -66,6 +68,11 @@ buildkonfig {
     defaultConfigs("release") {
         buildConfigField(FieldSpec.Type.BOOLEAN, "DEBUG", "false")
     }
+}
+
+mockmp {
+    usesHelper = true
+    installWorkaround()
 }
 
 android {

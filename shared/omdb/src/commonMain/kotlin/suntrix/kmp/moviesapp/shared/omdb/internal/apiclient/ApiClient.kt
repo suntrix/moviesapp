@@ -8,7 +8,7 @@ import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readBytes
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.Url
 import io.ktor.http.contentType
@@ -38,8 +38,7 @@ internal class ApiClient(
         HttpResponseValidator {
             validateResponse { response ->
                 try {
-                    val error: ErrorResponse = DefaultJson.decodeFromString(response.readBytes().contentToString())
-                    throw ErrorResponseException(response, error)
+                    throw ErrorResponseException(DefaultJson.decodeFromString(response.bodyAsText()))
                 } catch (error: SerializationException) {
                     // nothing to do
                 }
@@ -59,6 +58,5 @@ internal class ApiClient(
 }
 
 internal class ErrorResponseException(
-    response: HttpResponse,
     val errorResponse: ErrorResponse
-) : ResponseException(response, errorResponse.error)
+) : RuntimeException(errorResponse.error)

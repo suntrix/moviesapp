@@ -2,6 +2,7 @@ package suntrix.kmp.moviesapp.shared.omdb.internal
 
 import suntrix.kmp.moviesapp.shared.logging.Logger
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.ApiClient
+import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.ErrorResponseException
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.endpoints.search
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.model.SearchResponse
 import suntrix.kmp.moviesapp.shared.omdb.internal.apiclient.model.Type
@@ -15,11 +16,16 @@ internal class OMDbApiDataSource(
         type: Type? = null,
         releaseYear: Int? = null,
         page: Int? = null,
-    ): SearchResponse {
+    ): SearchResponse? {
         logger.debug("OMDbApiDataSource::search", mapOf("query" to query, "type" to "$type", "releaseYear" to "$releaseYear", "page" to "$page"))
 
-        return apiClient.search(query, type, releaseYear, page).also {
-            logger.debug("OMDbApiDataSource::search", mapOf("response" to "$it"))
+        return try {
+            apiClient.search(query, type, releaseYear, page).also {
+                logger.debug("OMDbApiDataSource::search", mapOf("response" to "$it"))
+            }
+        } catch (error: Throwable) {
+            logger.error("OMDbApiDataSource::search", mapOf("error" to "${(error as? ErrorResponseException)?.errorResponse ?: error.message}"), null, error.cause)
+            null
         }
     }
 }
