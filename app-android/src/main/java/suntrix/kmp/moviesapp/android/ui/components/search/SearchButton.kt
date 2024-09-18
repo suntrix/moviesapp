@@ -15,8 +15,8 @@ import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 
 @Composable
 fun SearchButton(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Button(
         shape = CircleShape,
@@ -24,9 +24,7 @@ fun SearchButton(
             .size(50.dp)
             .then(modifier),
         contentPadding = PaddingValues(0.dp),
-        onClick = {
-            onClick()
-        }
+        onClick = onClick
     ) {
         Icon(
             imageVector = Icons.Filled.Search,
@@ -39,6 +37,8 @@ fun SearchButton(
 @Composable
 private fun SearchButtonPreview() {
     AppTheme {
-        SearchButton {}
+        SearchButton(
+            onClick = {}
+        )
     }
 }

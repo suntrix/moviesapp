@@ -15,8 +15,8 @@ class SearchViewModel(
     private val logger: Logger = injectLogger()
 ) : ViewModel() {
 
-    private val _results = MutableStateFlow<List<SearchResult>>(emptyList())
-    val results: StateFlow<List<SearchResult>>
+    private val _results = MutableStateFlow<List<SearchState.SearchResult>>(emptyList())
+    val results: StateFlow<List<SearchState.SearchResult>>
         get() = _results
 
     fun clear() {
@@ -31,7 +31,7 @@ class SearchViewModel(
         viewModelScope.launch {
             _results.value = repository.search(query).map {
                 it.run {
-                    SearchResult(
+                    SearchState.SearchResult(
                         title = title,
                         releaseYear = releaseYear,
                         imageUrl = imageUrl
@@ -40,10 +40,4 @@ class SearchViewModel(
             }
         }
     }
-
-    data class SearchResult(
-        val title: String,
-        val releaseYear: String,
-        val imageUrl: String
-    )
 }

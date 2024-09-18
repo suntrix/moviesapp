@@ -9,7 +9,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -20,7 +22,10 @@ import suntrix.kmp.moviesapp.android.ui.components.movies.Movie
 import suntrix.kmp.moviesapp.android.ui.components.movies.MovieList
 import suntrix.kmp.moviesapp.android.ui.components.movies.MovieListViewModel
 import suntrix.kmp.moviesapp.android.ui.components.search.Search
+import suntrix.kmp.moviesapp.android.ui.components.search.SearchAction
+import suntrix.kmp.moviesapp.android.ui.components.search.SearchState
 import suntrix.kmp.moviesapp.android.ui.components.search.SearchViewModel
+import suntrix.kmp.moviesapp.android.ui.components.search.rememberSearchState
 import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 
 @Composable
@@ -31,28 +36,40 @@ fun MainScreen(
     val searchResults by searchViewModel.results.collectAsStateWithLifecycle()
     val movieList by movieListViewModel.movies.collectAsStateWithLifecycle()
 
+    val searchState = rememberSearchState()
+
     MainScreen(
-        searchResults = searchResults,
-        onSearch = { searchViewModel.search(it) },
-        onSearchCleared = { searchViewModel.clear() },
-        onSearchCanceled = { searchViewModel.clear() },
+        searchState = searchState,
+        searchAction = {
+            when (it) {
+                SearchAction.OnCancel,
+                SearchAction.OnClear -> searchViewModel.clear()
+                is SearchAction.OnSearch -> it.searchQuery?.run { searchViewModel.search(this) }
+            }
+        },
         movieList = movieList
     )
 
-    LaunchedEffect(key1 = movieListViewModel) {
+    LaunchedEffect(searchResults) {
+        searchState.searchResults = searchResults
+    }
+
+    LaunchedEffect(movieListViewModel) {
         movieListViewModel.syncData()
     }
 }
 
 @Composable
 fun MainScreen(
-    searchResults: List<SearchViewModel.SearchResult>,
-    onSearch: (String) -> Unit,
-    onSearchCleared: () -> Unit,
-    onSearchCanceled: () -> Unit,
-    movieList: List<Movie>
+    searchAction: (SearchAction) -> Unit,
+    movieList: List<Movie>,
+    searchState: SearchState = rememberSearchState()
 ) {
-    val showList = searchResults.isEmpty()
+    val showList by remember {
+        derivedStateOf {
+            searchState.searchResults.isEmpty()
+        }
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -63,10 +80,8 @@ fun MainScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Search(
-                results = searchResults,
-                onSearch = onSearch,
-                onClearClick = onSearchCleared,
-                onCancelClick = onSearchCanceled
+                state = searchState,
+                action = searchAction
             )
 
             if (showList) {
@@ -85,17 +100,21 @@ fun MainScreen(
 
 private class MainScreenPreviewProvider : PreviewParameterProvider<MainScreenPreviewProvider.Data> {
     data class Data(
-        val searchResults: List<SearchViewModel.SearchResult>,
+        val searchState: SearchState,
         val movieList: List<Movie>
     )
 
     override val values = sequenceOf(
         Data(
-            searchResults = emptyList(),
+            searchState = SearchState().apply {
+                searchResults = emptyList()
+            },
             movieList = emptyList()
         ),
         Data(
-            searchResults = emptyList(),
+            searchState = SearchState().apply {
+                searchResults = emptyList()
+            },
             movieList = listOf(
                 Movie(
                     title = "Iron Man",
@@ -115,33 +134,37 @@ private class MainScreenPreviewProvider : PreviewParameterProvider<MainScreenPre
             )
         ),
         Data(
-            searchResults = listOf(
-                SearchViewModel.SearchResult(
-                    title = "Iron Man",
-                    releaseYear = "2008",
-                    imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
-                ),
-                SearchViewModel.SearchResult(
-                    title = "Iron Man 2",
-                    releaseYear = "2010",
-                    imageUrl = "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
+            searchState = SearchState().apply {
+                searchResults = listOf(
+                    SearchState.SearchResult(
+                        title = "Iron Man",
+                        releaseYear = "2008",
+                        imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
+                    ),
+                    SearchState.SearchResult(
+                        title = "Iron Man 2",
+                        releaseYear = "2010",
+                        imageUrl = "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
+                    )
                 )
-            ),
+            },
             movieList = emptyList()
         ),
         Data(
-            searchResults = listOf(
-                SearchViewModel.SearchResult(
-                    title = "Iron Man",
-                    releaseYear = "2008",
-                    imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
-                ),
-                SearchViewModel.SearchResult(
-                    title = "Iron Man 2",
-                    releaseYear = "2010",
-                    imageUrl = "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
+            searchState = SearchState().apply {
+                searchResults = listOf(
+                    SearchState.SearchResult(
+                        title = "Iron Man",
+                        releaseYear = "2008",
+                        imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
+                    ),
+                    SearchState.SearchResult(
+                        title = "Iron Man 2",
+                        releaseYear = "2010",
+                        imageUrl = "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
+                    )
                 )
-            ),
+            },
             movieList = listOf(
                 Movie(
                     title = "Iron Man",
@@ -168,10 +191,8 @@ private class MainScreenPreviewProvider : PreviewParameterProvider<MainScreenPre
 private fun MainScreenPreview(@PreviewParameter(MainScreenPreviewProvider::class) data: MainScreenPreviewProvider.Data) {
     AppTheme {
         MainScreen(
-            searchResults = data.searchResults,
-            onSearch = {},
-            onSearchCleared = {},
-            onSearchCanceled = {},
+            searchState = data.searchState,
+            searchAction = {},
             movieList = data.movieList
         )
     }

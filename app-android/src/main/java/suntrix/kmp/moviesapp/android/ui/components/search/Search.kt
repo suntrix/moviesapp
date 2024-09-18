@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,18 +32,44 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import suntrix.kmp.moviesapp.android.ui.components.search.SearchState.SearchResult
 import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
+
+@Stable
+class SearchState {
+    var searchResults by mutableStateOf<List<SearchResult>>(emptyList())
+
+    var isExpanded by mutableStateOf(false)
+        internal set
+
+    @Immutable
+    data class SearchResult(
+        val title: String,
+        val releaseYear: String,
+        val imageUrl: String
+    )
+}
+
+@Composable
+fun rememberSearchState() = remember { SearchState() }
+
+sealed interface SearchAction {
+    data class OnSearch(val searchQuery: String?): SearchAction
+    data object OnClear: SearchAction
+    data object OnCancel: SearchAction
+}
 
 @Composable
 fun Search(
-    results: List<SearchViewModel.SearchResult>,
-    onSearch: (String) -> Unit,
-    onClearClick: () -> Unit,
-    onCancelClick: () -> Unit,
+    action: (SearchAction) -> Unit,
     modifier: Modifier = Modifier,
-    expanded: Boolean = results.isNotEmpty()
+    state: SearchState = rememberSearchState()
 ) {
-    var isExpanded by remember { mutableStateOf(expanded) }
+    val searchResultsNotEmpty by remember {
+        derivedStateOf {
+            state.searchResults.isNotEmpty()
+        }
+    }
 
     Row(
         modifier = Modifier
@@ -51,39 +79,47 @@ fun Search(
         horizontalArrangement = Arrangement.End
     ) {
         AnimatedContent(
-            targetState = isExpanded,
+            targetState = state.isExpanded,
             label = ""
         ) { targetState ->
             if (targetState) {
                 Surface {
                     Column(
-                        modifier = if (results.isNotEmpty()) {
-                            Modifier.fillMaxSize()
-                        } else {
-                            Modifier
+                        modifier = Modifier.apply {
+                            if (searchResultsNotEmpty) {
+                                fillMaxSize()
+                            }
                         },
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         SearchBar(
-                            onSearch = onSearch,
-                            onClearClick = onClearClick,
-                            onCancelClick = {
-                                isExpanded = false
-                                onCancelClick()
+                            action = {
+                                when (it) {
+                                    SearchBarAction.OnCancel -> {
+                                        state.isExpanded = false
+                                        action(SearchAction.OnCancel)
+                                    }
+                                    SearchBarAction.OnClear -> {
+                                        action(SearchAction.OnClear)
+                                    }
+                                    is SearchBarAction.OnSearch -> {
+                                        action(SearchAction.OnSearch(it.searchQuery))
+                                    }
+                                }
                             }
                         )
 
-                        if (results.isNotEmpty()) {
+                        if (searchResultsNotEmpty) {
                             SearchResults(
-                                results = results
+                                results = state.searchResults
                             )
                         }
                     }
                 }
             } else {
-                SearchButton {
-                    isExpanded = true
-                }
+                SearchButton(
+                    onClick = { state.isExpanded = true }
+                )
             }
         }
     }
@@ -91,7 +127,7 @@ fun Search(
 
 @Composable
 fun SearchResults(
-    results: List<SearchViewModel.SearchResult>,
+    results: List<SearchResult>,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -113,7 +149,7 @@ fun SearchResults(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun SearchResultsItem(
-    result: SearchViewModel.SearchResult,
+    result: SearchResult,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -151,49 +187,37 @@ fun SearchResultsItem(
     }
 }
 
-private class SearchPreviewProvider : PreviewParameterProvider<SearchPreviewProvider.Data> {
-    data class Data(
-        val results: List<SearchViewModel.SearchResult>,
-        val expanded: Boolean
-    )
-
+private class SearchPreviewProvider : PreviewParameterProvider<SearchState> {
     override val values = sequenceOf(
-        Data(
-            results = emptyList(),
-            expanded = false
-        ),
-        Data(
-            results = emptyList(),
-            expanded = true
-        ),
-        Data(
-            results = listOf(
-                SearchViewModel.SearchResult(
+        SearchState(),
+        SearchState().apply {
+            isExpanded = true
+        },
+        SearchState().apply {
+            searchResults = listOf(
+                SearchResult(
                     title = "Iron Man",
                     releaseYear = "2008",
                     imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
                 ),
-                SearchViewModel.SearchResult(
+                SearchResult(
                     title = "Iron Man 2",
                     releaseYear = "2010",
                     imageUrl = "https://m.media-amazon.com/images/M/MV5BZGVkNDAyM2EtYzYxYy00ZWUxLTgwMjgtY2VmODE5OTk3N2M5XkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
                 )
-            ),
-            expanded = true
-        )
+            )
+            isExpanded = true
+        }
     )
 }
 
 @Preview
 @Composable
-private fun SearchPreview(@PreviewParameter(SearchPreviewProvider::class) data: SearchPreviewProvider.Data) {
+private fun SearchPreview(@PreviewParameter(SearchPreviewProvider::class) state: SearchState) {
     AppTheme {
         Search(
-            results = data.results,
-            onSearch = {},
-            onClearClick = {},
-            onCancelClick = {},
-            expanded = data.expanded
+            action = {},
+            state = state
         )
     }
 }

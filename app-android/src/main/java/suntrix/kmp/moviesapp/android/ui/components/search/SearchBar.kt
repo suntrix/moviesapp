@@ -17,6 +17,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,26 +30,38 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
 
+@Stable
+class SearchBarState {
+    var searchQuery by mutableStateOf<String?>(null)
+        internal set
+
+    var placeholderText: String = "Search..."
+}
+
+@Composable
+fun rememberSearchBarState() = remember { SearchBarState() }
+
+sealed interface SearchBarAction {
+    data class OnSearch(val searchQuery: String?): SearchBarAction
+    data object OnClear: SearchBarAction
+    data object OnCancel: SearchBarAction
+}
+
 @Composable
 fun SearchBar(
-    onSearch: (String) -> Unit,
-    onClearClick: () -> Unit,
-    onCancelClick: () -> Unit,
+    action: (SearchBarAction) -> Unit,
     modifier: Modifier = Modifier,
-    placeholderText: String = "Search...",
-    searchQuery: String = "",
+    state: SearchBarState = rememberSearchBarState(),
 ) {
-    var inputvalue by remember { mutableStateOf(TextFieldValue(text = searchQuery)) }
     val showClearButton by remember {
         derivedStateOf {
-            inputvalue.text.isNotBlank()
+            state.searchQuery?.isNotBlank() == true
         }
     }
 
@@ -62,9 +75,9 @@ fun SearchBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextField(
-            value = inputvalue,
-            onValueChange = { inputvalue = it },
-            placeholder = { Text(placeholderText) },
+            value = state.searchQuery ?: "",
+            onValueChange = { state.searchQuery = it },
+            placeholder = { Text(state.placeholderText) },
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(focusRequester)
@@ -82,8 +95,8 @@ fun SearchBar(
                         imageVector = Icons.Filled.Clear,
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            inputvalue = inputvalue.copy(text = "")
-                            onClearClick()
+                            state.searchQuery = ""
+                            action(SearchBarAction.OnClear)
                         },
                         tint = MaterialTheme.colorScheme.primary
                     )
@@ -91,11 +104,13 @@ fun SearchBar(
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(onSearch = {
-                onSearch(inputvalue.text)
-                focusRequester.freeFocus()
-                keyboardController?.hide()
-            }),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    action(SearchBarAction.OnSearch(state.searchQuery))
+                    focusRequester.freeFocus()
+                    keyboardController?.hide()
+                }
+            ),
             shape = CircleShape,
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
@@ -108,7 +123,11 @@ fun SearchBar(
             text = "Cancel",
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-                .clickable(onClick = onCancelClick)
+                .clickable(
+                    onClick = {
+                        action(SearchBarAction.OnCancel)
+                    }
+                )
         )
     }
 
@@ -117,30 +136,24 @@ fun SearchBar(
     }
 }
 
-private class SearchBarPreviewProvider : PreviewParameterProvider<SearchBarPreviewProvider.Data> {
-    data class Data(
-        val searchQuery: String
-    )
-
+private class SearchBarPreviewProvider : PreviewParameterProvider<SearchBarState> {
     override val values = sequenceOf(
-        Data(
-            searchQuery = ""
-        ),
-        Data(
-            searchQuery = "qwerty"
-        )
+        SearchBarState().apply {
+            placeholderText = "What you're looking for?"
+        },
+        SearchBarState().apply {
+            searchQuery = "Lorem ipsum"
+        }
     )
 }
 
 @Preview
 @Composable
-private fun SearchBarPreview(@PreviewParameter(SearchBarPreviewProvider::class) data: SearchBarPreviewProvider.Data) {
+private fun SearchBarPreview(@PreviewParameter(SearchBarPreviewProvider::class) state: SearchBarState) {
     AppTheme {
         SearchBar(
-            onSearch = {},
-            onClearClick = {},
-            onCancelClick = {},
-            searchQuery = data.searchQuery
+            action = {},
+            state = state
         )
     }
 }
