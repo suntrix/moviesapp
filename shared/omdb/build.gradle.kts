@@ -1,5 +1,5 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.codingfeline.buildkonfig.compiler.FieldSpec
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidLibrary)
@@ -56,7 +56,9 @@ buildkonfig {
     defaultConfigs {
         buildConfigField(FieldSpec.Type.BOOLEAN, "DEBUG", "true")
 
-        val apiKey: String = gradleLocalProperties(rootProject.projectDir).getProperty("omdb.apiKey").also {
+        val properties = Properties()
+        properties.load(rootProject.file("local.properties").inputStream())
+        val apiKey: String = properties.getProperty("omdb.apiKey").also {
             require(it.isNotEmpty()) {
                 "OMDb API key not set in local.properties `omdb.apiKey`"
             }
