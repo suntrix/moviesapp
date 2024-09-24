@@ -3,6 +3,7 @@ package suntrix.kmp.moviesapp.android.ui.components.movies
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -77,11 +78,12 @@ private fun MovieListPreview() {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 fun LazyListScope.movieListItemGroups(
     groups: List<MovieGroup>,
 ) {
     groups.forEach { movieGroup ->
-        item {
+        stickyHeader {
             MovieListItemGroup(
                 movieGroup = movieGroup,
                 modifier = Modifier

@@ -112,7 +112,7 @@ class MovieListViewModel(
                 listOf(
                     MovieGroup(
                         name = "MCU Phase 2",
-                        movies = phase2.subList(0, 2)
+                        movies = phase2.subList(0, 2).reversed()
                     ),
                     MovieGroup(
                         name = "MCU Phase 1",
@@ -127,11 +127,11 @@ class MovieListViewModel(
                 listOf(
                     MovieGroup(
                         name = "MCU Phase 1",
-                        movies = phase1.subList(0, 2)
+                        movies = phase1
                     ),
                     MovieGroup(
                         name = "MCU Phase 2",
-                        movies = phase2.subList(0, 2)
+                        movies = phase2
                     )
                 )
             )
