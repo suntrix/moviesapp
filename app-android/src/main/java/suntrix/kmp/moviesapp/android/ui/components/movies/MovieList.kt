@@ -1,80 +1,63 @@
 package suntrix.kmp.moviesapp.android.ui.components.movies
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import suntrix.kmp.moviesapp.android.ui.theme.AppTheme
+
+@Immutable
+data class MovieCollection(
+    val groups: List<MovieGroup> = emptyList()
+)
 
 @Composable
 fun MovieList(
-    movies: List<Movie>
+    movies: MovieCollection,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(movies) { movie ->
-            MovieListItem(movie = movie)
-        }
-    }
-}
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-fun MovieListItem(
-    movie: Movie
-) {
-    Card(
-        modifier = Modifier
-            .height(160.dp),
-        colors = CardDefaults.cardColors()
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            GlideImage(
-                model = movie.imageUrl,
-                contentDescription = "${movie.title} poster",
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .aspectRatio(2f / 3)
-                    .background(Color.LightGray)
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = movie.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+        movies.groups.forEach { movieGroup ->
+            item {
+                MovieListItemGroup(
+                    movieGroup = movieGroup,
+                    modifier = Modifier
+                        .animateItem(
+                            fadeInSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                            placementSpec = spring(
+                                stiffness = Spring.StiffnessMediumLow,
+                                visibilityThreshold = IntOffset.VisibilityThreshold
+                            ),
+                            fadeOutSpec = spring(stiffness = Spring.StiffnessMediumLow)
+                        )
                 )
+            }
 
-                Text(
-                    text = movie.releaseYear.toString(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            movieGroup.movies.forEach { movie ->
+                item(key = movie.title) {
+                    MovieListItem(
+                        movie = movie,
+                        modifier = Modifier
+                            .animateItem(
+                                fadeInSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                                placementSpec = spring(
+                                    stiffness = Spring.StiffnessMediumLow,
+                                    visibilityThreshold = IntOffset.VisibilityThreshold
+                                ),
+                                fadeOutSpec = spring(stiffness = Spring.StiffnessMediumLow)
+                            )
+                    )
+                }
             }
         }
     }
@@ -85,21 +68,38 @@ fun MovieListItem(
 private fun MovieListPreview() {
     AppTheme {
         MovieList(
-            movies = listOf(
-                Movie(
-                    title = "Iron Man",
-                    releaseYear = 2008,
-                    imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
-                ),
-                Movie(
-                    title = "Captain America: The First Avenger",
-                    releaseYear = 2011,
-                    imageUrl = "https://m.media-amazon.com/images/M/MV5BNzAxMjg0NjYtNjNlOS00NTdlLThkMGEtMjAwYjk3NmNkOGFhXkEyXkFqcGdeQXVyNTgzMDMzMTg@._V1_SX300.jpg"
-                ),
-                Movie(
-                    title = "The Avengers",
-                    releaseYear = 2012,
-                    imageUrl = "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
+            movies = MovieCollection(
+                groups = listOf(
+                    MovieGroup(
+                        name = "MCU Phase 1",
+                        movies = listOf(
+                            Movie(
+                                title = "Iron Man",
+                                releaseYear = 2008,
+                                imageUrl = "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
+                            ),
+                            Movie(
+                                title = "The Incredible Hulk",
+                                releaseYear = 2008,
+                                imageUrl = "https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_SX300.jpg"
+                            ),
+                        )
+                    ),
+                    MovieGroup(
+                        name = "MCU Phase 2",
+                        movies = listOf(
+                            Movie(
+                                title = "Iron Man 3",
+                                releaseYear = 2013,
+                                imageUrl = "https://m.media-amazon.com/images/M/MV5BMjIzMzAzMjQyM15BMl5BanBnXkFtZTcwNzM2NjcyOQ@@._V1_SX300.jpg"
+                            ),
+                            Movie(
+                                title = "Thor: The Dark World",
+                                releaseYear = 2013,
+                                imageUrl = "https://m.media-amazon.com/images/M/MV5BMTQyNzAwOTUxOF5BMl5BanBnXkFtZTcwMTE0OTc5OQ@@._V1_SX300.jpg"
+                            ),
+                        )
+                    )
                 )
             )
         )

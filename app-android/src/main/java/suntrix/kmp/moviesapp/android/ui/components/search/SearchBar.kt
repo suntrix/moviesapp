@@ -42,15 +42,16 @@ class SearchBarState {
         internal set
 
     var placeholderText: String = "Search..."
+        internal set
 }
 
 @Composable
 fun rememberSearchBarState() = remember { SearchBarState() }
 
 sealed interface SearchBarAction {
-    data class OnSearch(val searchQuery: String?): SearchBarAction
-    data object OnClear: SearchBarAction
-    data object OnCancel: SearchBarAction
+    data class OnSearch(val searchQuery: String?) : SearchBarAction
+    data object OnClear : SearchBarAction
+    data object OnCancel : SearchBarAction
 }
 
 @Composable
@@ -138,6 +139,7 @@ fun SearchBar(
 
 private class SearchBarPreviewProvider : PreviewParameterProvider<SearchBarState> {
     override val values = sequenceOf(
+        SearchBarState(),
         SearchBarState().apply {
             placeholderText = "What you're looking for?"
         },

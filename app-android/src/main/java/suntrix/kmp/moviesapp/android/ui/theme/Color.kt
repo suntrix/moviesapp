@@ -3,8 +3,10 @@ package suntrix.kmp.moviesapp.android.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF825500)
+
 //val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFFFDDB3)
+
 //val md_theme_light_onPrimaryContainer = Color(0xFF291800)
 //val md_theme_light_secondary = Color(0xFF6F5B40)
 //val md_theme_light_onSecondary = Color(0xFFFFFFFF)
@@ -34,8 +36,10 @@ val md_theme_light_surfaceVariant = Color(0xFFF0E0CF)
 //val md_theme_light_scrim = Color(0xFF000000)
 
 val md_theme_dark_primary = Color(0xFFFFB951)
+
 //val md_theme_dark_onPrimary = Color(0xFF452B00)
 val md_theme_dark_primaryContainer = Color(0xFF633F00)
+
 //val md_theme_dark_onPrimaryContainer = Color(0xFFFFDDB3)
 //val md_theme_dark_secondary = Color(0xFFDDC2A1)
 //val md_theme_dark_onSecondary = Color(0xFF3E2D16)

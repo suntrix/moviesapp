@@ -54,9 +54,9 @@ class SearchState {
 fun rememberSearchState() = remember { SearchState() }
 
 sealed interface SearchAction {
-    data class OnSearch(val searchQuery: String?): SearchAction
-    data object OnClear: SearchAction
-    data object OnCancel: SearchAction
+    data class OnSearch(val searchQuery: String?) : SearchAction
+    data object OnClear : SearchAction
+    data object OnCancel : SearchAction
 }
 
 @Composable
@@ -99,9 +99,11 @@ fun Search(
                                         state.isExpanded = false
                                         action(SearchAction.OnCancel)
                                     }
+
                                     SearchBarAction.OnClear -> {
                                         action(SearchAction.OnClear)
                                     }
+
                                     is SearchBarAction.OnSearch -> {
                                         action(SearchAction.OnSearch(it.searchQuery))
                                     }
