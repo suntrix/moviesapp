@@ -5,6 +5,9 @@ import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
@@ -27,39 +30,7 @@ fun MovieList(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        movies.groups.forEach { movieGroup ->
-            item {
-                MovieListItemGroup(
-                    movieGroup = movieGroup,
-                    modifier = Modifier
-                        .animateItem(
-                            fadeInSpec = spring(stiffness = Spring.StiffnessMediumLow),
-                            placementSpec = spring(
-                                stiffness = Spring.StiffnessMediumLow,
-                                visibilityThreshold = IntOffset.VisibilityThreshold
-                            ),
-                            fadeOutSpec = spring(stiffness = Spring.StiffnessMediumLow)
-                        )
-                )
-            }
-
-            movieGroup.movies.forEach { movie ->
-                item(key = movie.title) {
-                    MovieListItem(
-                        movie = movie,
-                        modifier = Modifier
-                            .animateItem(
-                                fadeInSpec = spring(stiffness = Spring.StiffnessMediumLow),
-                                placementSpec = spring(
-                                    stiffness = Spring.StiffnessMediumLow,
-                                    visibilityThreshold = IntOffset.VisibilityThreshold
-                                ),
-                                fadeOutSpec = spring(stiffness = Spring.StiffnessMediumLow)
-                            )
-                    )
-                }
-            }
-        }
+        movieListItemGroups(movies.groups)
     }
 }
 
@@ -103,5 +74,41 @@ private fun MovieListPreview() {
                 )
             )
         )
+    }
+}
+
+fun LazyListScope.movieListItemGroups(
+    groups: List<MovieGroup>,
+) {
+    groups.forEach { movieGroup ->
+        item {
+            MovieListItemGroup(
+                movieGroup = movieGroup,
+                modifier = Modifier
+                    .animateItem(
+                        fadeInSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                        placementSpec = spring(
+                            stiffness = Spring.StiffnessMediumLow,
+                            visibilityThreshold = IntOffset.VisibilityThreshold
+                        ),
+                        fadeOutSpec = spring(stiffness = Spring.StiffnessMediumLow)
+                    )
+            )
+        }
+
+        items(items = movieGroup.movies, key = { it.title }) { movie ->
+            MovieListItem(
+                movie = movie,
+                modifier = Modifier
+                    .animateItem(
+                        fadeInSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                        placementSpec = spring(
+                            stiffness = Spring.StiffnessMediumLow,
+                            visibilityThreshold = IntOffset.VisibilityThreshold
+                        ),
+                        fadeOutSpec = spring(stiffness = Spring.StiffnessMediumLow)
+                    )
+            )
+        }
     }
 }
